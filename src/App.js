@@ -2,9 +2,9 @@ import React from 'react';
 import Header from './components/Header';
 import Categories from './components/Categories';
 import Sort from './components/Sort';
-
-import './scss/app.scss';
 import PizzaBlock from './components/PizzaBlock';
+import pizzaArray from './pizza.json';
+import './scss/app.scss';
 
 const App = () => {
     return (
@@ -18,8 +18,10 @@ const App = () => {
                             <Sort />
                         </div>
                         <h2 className="content__title">Все пиццы</h2>
-                        <div className="pizza-block">
-                            <PizzaBlock title="Мексиканская" price="500" />
+                        <div className="content__items">
+                            {pizzaArray.map((obj) => (
+                                <PizzaBlock {...obj} />
+                            ))}
                         </div>
                     </div>
                 </div>
