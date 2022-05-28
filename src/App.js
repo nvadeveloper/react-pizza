@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
-import Card from './pages/Card';
+import Cart from './pages/Cart';
 
 import './scss/app.scss';
 
@@ -14,14 +14,12 @@ const App = () => {
             <div className="wrapper">
                 <Header />
                 <div className="content">
-                    <div className="container">
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/card" element={<Card />} />
-                            <Route path="/not-found" element={<NotFound />} />
-                            <Route path="*" element={<NotFound />} />
-                        </Routes>
-                    </div>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/not-found" element={<NotFound />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
                 </div>
             </div>
         </div>
