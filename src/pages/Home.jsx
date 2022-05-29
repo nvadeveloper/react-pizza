@@ -11,13 +11,19 @@ const Home = () => {
 
     const [categoryId, setCategoryId] = useState(0);
     const [sortType, setSortType] = useState({
-        name: 'популярности',
+        name: 'популярности (DESC)',
         sortProperty: 'raiting',
     });
 
     useEffect(() => {
         setIsLoading(true);
-        fetch('https://629128b827f4ba1c65c8cf57.mockapi.io/items?category=' + categoryId)
+        fetch(
+            `https://629128b827f4ba1c65c8cf57.mockapi.io/items?${
+                categoryId > 0 ? `category=${categoryId}` : ''
+            }&sortBy=${sortType.sortProperty.replace('-', '')}&order=${
+                sortType.sortProperty.includes('-') ? 'asc' : 'desc'
+            }`,
+        )
             .then((res) => res.json())
             .then((arr) => {
                 setItems(arr);

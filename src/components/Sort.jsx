@@ -4,16 +4,28 @@ const Sort = ({ value, onChangeSort }) => {
     const [open, setOpen] = useState(false);
     const list = [
         {
-            name: 'популярности',
+            name: 'популярности (DESC)',
             sortProperty: 'raiting',
         },
         {
-            name: 'цене',
+            name: 'популярности (ASC)',
+            sortProperty: '-raiting',
+        },
+        {
+            name: 'цене (DESC)',
             sortProperty: 'price',
         },
         {
-            name: 'алфавиту',
+            name: 'цене (ASC)',
+            sortProperty: '-price',
+        },
+        {
+            name: 'алфавиту (DESC)',
             sortProperty: 'title',
+        },
+        {
+            name: 'алфавиту (ASC)',
+            sortProperty: '-title',
         },
     ];
 
