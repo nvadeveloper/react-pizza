@@ -1,6 +1,7 @@
 @import '../variables.scss';
 
 .sort {
+    z-index: 50;
     position: relative;
     width: 320px;
     &__label {
