@@ -2,7 +2,7 @@ import React from 'react';
 
 import style from './Search.module.scss';
 
-export const Search = ({ searchValue, setSearchValue }) => {
+export const Search = () => {
     return (
         <div>
             <input

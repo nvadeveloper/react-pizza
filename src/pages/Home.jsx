@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import Categories from '../components/Categories';
+import Pagination from '../components/Pagination';
 import PizzaBlock from '../components/PizzaBlock';
 import Placeholder from '../components/PizzaBlock/Placeholder';
 import Sort from '../components/Sort';
@@ -14,6 +15,8 @@ const Home = ({ searchValue }) => {
         name: 'популярности (DESC)',
         sortProperty: 'raiting',
     });
+
+    const [currentPage, setCurrentPage] = useState(1);
 
     const pizzas = items
         // .filter((obj) => {
@@ -35,7 +38,7 @@ const Home = ({ searchValue }) => {
         const search = searchValue ? `&search=${searchValue}` : '';
 
         fetch(
-            `https://629128b827f4ba1c65c8cf57.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`,
+            `https://629128b827f4ba1c65c8cf57.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
             // ${searchValue ? `&search=${searchValue}` : ''}`,
         )
             .then((res) => res.json())
@@ -44,7 +47,7 @@ const Home = ({ searchValue }) => {
                 setIsLoading(false);
             });
         window.scrollTo(0, 0);
-    }, [categoryId, sortType, searchValue]);
+    }, [categoryId, sortType, searchValue, currentPage]);
 
     return (
         <>
@@ -55,6 +58,7 @@ const Home = ({ searchValue }) => {
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">{isLoading ? placeholder : pizzas}</div>
+                <Pagination onChangePage={(num) => setCurrentPage(num)} />
             </div>
         </>
     );
