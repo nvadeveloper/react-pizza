@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
@@ -8,11 +8,10 @@ import Cart from './pages/Cart';
 
 import './scss/app.scss';
 
+export const SearchContext = createContext('');
+
 const App = () => {
     const [searchValue, setSearchValue] = useState('');
-    const SearchContext = useContext('');
-
-    console.log(searchValue);
 
     return (
         <div className="App">
@@ -21,7 +20,7 @@ const App = () => {
                     <Header />
                     <div className="content">
                         <Routes>
-                            <Route path="/" element={<Home searchValue={searchValue} />} />
+                            <Route path="/" element={<Home />} />
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/not-found" element={<NotFound />} />
                             <Route path="*" element={<NotFound />} />
