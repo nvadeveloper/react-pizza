@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { SearchContext } from '../App';
 
 import Categories from '../components/Categories';
@@ -8,17 +9,21 @@ import Placeholder from '../components/PizzaBlock/Placeholder';
 import Sort from '../components/Sort';
 
 const Home = () => {
+    const dispatch = useDispatch();
+    const categoryId = useSelector((state) => state.filter.categoryId);
+
+    const setCategoryId = () => console.log(1);
+    console.log(categoryId);
     const { searchValue } = useContext(SearchContext);
 
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const [categoryId, setCategoryId] = useState(0);
+    // const [categoryId, setCategoryId] = useState(0);
     const [sortType, setSortType] = useState({
         name: 'популярности (DESC)',
         sortProperty: 'raiting',
     });
-
     const [currentPage, setCurrentPage] = useState(1);
 
     const pizzas = items
