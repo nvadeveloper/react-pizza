@@ -11,8 +11,7 @@ import Sort from '../components/Sort';
 
 const Home = () => {
     const dispatch = useDispatch();
-    const categoryId = useSelector((state) => state.filter.categoryId);
-    const sortType = useSelector((state) => state.filter.sort.sortProperty);
+    const { categoryId, sort } = useSelector((state) => state.filter);
 
     const { searchValue } = useContext(SearchContext);
 
@@ -27,8 +26,8 @@ const Home = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        const sortBy = sortType.replace('-', '');
-        const order = sortType.includes('-') ? 'asc' : 'desc';
+        const sortBy = sort.sortProperty.replace('-', '');
+        const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = searchValue ? `&search=${searchValue}` : '';
 
@@ -41,7 +40,7 @@ const Home = () => {
                 setIsLoading(false);
             });
         window.scrollTo(0, 0);
-    }, [categoryId, sortType, searchValue, currentPage]);
+    }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
     return (
         <>
@@ -51,7 +50,6 @@ const Home = () => {
                         value={categoryId}
                         onChangeCategory={(id) => dispatch(setCategoryId(id))}
                     />
-                    {/* <Sort value={sortType} onChangeSort={(id) => setSortType(id)} /> */}
                     <Sort />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
