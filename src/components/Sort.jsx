@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSort } from '../redux/slices/filterSlice';
 
-const Sort = ({ value, onChangeSort }) => {
+const Sort = () => {
     const [open, setOpen] = useState(false);
     const list = [
         {
@@ -29,6 +31,9 @@ const Sort = ({ value, onChangeSort }) => {
         },
     ];
 
+    const dispatch = useDispatch();
+    const sort = useSelector((state) => state.filter.sort);
+
     return (
         <div className="sort">
             <div className="sort__label">
@@ -44,7 +49,7 @@ const Sort = ({ value, onChangeSort }) => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setOpen(!open)}>{value.name}</span>
+                <span onClick={() => setOpen(!open)}>{sort.name}</span>
             </div>
             {open && (
                 <div className="sort__popup">
@@ -52,10 +57,10 @@ const Sort = ({ value, onChangeSort }) => {
                         {list.map((item, i) => (
                             <li
                                 onClick={() => {
-                                    onChangeSort(item);
+                                    dispatch(setSort(item));
                                     setOpen(false);
                                 }}
-                                className={value.sortProperty === item.sortProperty ? 'active' : ''}
+                                className={sort.sortProperty === item.sortProperty ? 'active' : ''}
                                 key={i}>
                                 {item.name}
                             </li>
