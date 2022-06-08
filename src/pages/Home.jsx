@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice';
 import { SearchContext } from '../App';
 import axios from 'axios';
+import qs from 'qs';
 
 import Categories from '../components/Categories';
 import Pagination from '../components/Pagination';
@@ -25,6 +26,16 @@ const Home = () => {
     const onChangePage = (num) => {
         dispatch(setCurrentPage(num));
     };
+
+    useEffect(() => {
+        const queryStr = qs.stringify({
+            sortProperty: sort.sortProperty,
+            categoryId,
+            currentPage,
+        });
+
+        console.log(queryStr);
+    }, [categoryId, sort.sortProperty, currentPage]);
 
     useEffect(() => {
         setIsLoading(true);
