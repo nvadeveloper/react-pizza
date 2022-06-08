@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice';
 import { SearchContext } from '../App';
@@ -12,7 +14,9 @@ import Placeholder from '../components/PizzaBlock/Placeholder';
 import Sort from '../components/Sort';
 
 const Home = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
     const { searchValue } = useContext(SearchContext);
@@ -28,14 +32,11 @@ const Home = () => {
     };
 
     useEffect(() => {
-        const queryStr = qs.stringify({
-            sortProperty: sort.sortProperty,
-            categoryId,
-            currentPage,
-        });
-
-        console.log(queryStr);
-    }, [categoryId, sort.sortProperty, currentPage]);
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1));
+            console.log(params);
+        }
+    }, []);
 
     useEffect(() => {
         setIsLoading(true);
@@ -55,6 +56,19 @@ const Home = () => {
             });
         window.scrollTo(0, 0);
     }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+
+    useEffect(() => {
+        const queryStr = qs.stringify({
+            sortProperty: sort.sortProperty,
+            categoryId,
+            currentPage,
+        });
+        try {
+            navigate(`?${queryStr}`);
+        } catch (error) {
+            console.log(error);
+        }
+    }, [categoryId, sort.sortProperty, currentPage]);
 
     return (
         <>
