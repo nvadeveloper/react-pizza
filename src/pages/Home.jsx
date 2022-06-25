@@ -12,6 +12,7 @@ import Pagination from '../components/Pagination';
 import PizzaBlock from '../components/PizzaBlock';
 import Placeholder from '../components/PizzaBlock/Placeholder';
 import Sort, { list } from '../components/Sort';
+import { fetchPizza } from '../redux/slices/pizzaSlice';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -19,11 +20,11 @@ const Home = () => {
     const isSearch = useRef(false);
     const isMounted = useRef(false);
 
+    const items = useSelector((state) => state.pizza.items);
     const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
     const { searchValue } = useContext(SearchContext);
 
-    const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const pizzas = items.map((obj) => <PizzaBlock {...obj} key={obj.id} />);
@@ -33,7 +34,7 @@ const Home = () => {
         dispatch(setCurrentPage(num));
     };
 
-    const fetchPizza = async () => {
+    const getPizza = async () => {
         setIsLoading(true);
 
         const sortBy = sort.sortProperty.replace('-', '');
@@ -42,10 +43,7 @@ const Home = () => {
         const search = searchValue ? `&search=${searchValue}` : '';
 
         try {
-            const res = await axios.get(
-                `https://629128b827f4ba1c65c8cf57.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
-            );
-            setItems(res.data);
+            dispatch(fetchPizza({ sortBy, order, category, search, currentPage }));
         } catch (error) {
             console.log(error);
         } finally {
@@ -66,7 +64,7 @@ const Home = () => {
 
     useEffect(() => {
         if (!isSearch.current) {
-            fetchPizza();
+            getPizza();
         }
 
         isSearch.current = false;
