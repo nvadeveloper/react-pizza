@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
 import { SearchContext } from '../App';
-import axios from 'axios';
 import qs from 'qs';
 
 import Categories from '../components/Categories';
@@ -20,12 +19,10 @@ const Home = () => {
     const isSearch = useRef(false);
     const isMounted = useRef(false);
 
-    const items = useSelector((state) => state.pizza.items);
+    const { items, status } = useSelector((state) => state.pizza);
     const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
     const { searchValue } = useContext(SearchContext);
-
-    const [isLoading, setIsLoading] = useState(true);
 
     const pizzas = items.map((obj) => <PizzaBlock {...obj} key={obj.id} />);
     const placeholder = [...new Array(6)].map((_, i) => <Placeholder key={i} />);
@@ -35,21 +32,12 @@ const Home = () => {
     };
 
     const getPizza = async () => {
-        setIsLoading(true);
-
         const sortBy = sort.sortProperty.replace('-', '');
         const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = searchValue ? `&search=${searchValue}` : '';
 
-        try {
-            dispatch(fetchPizza({ sortBy, order, category, search, currentPage }));
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsLoading(false);
-        }
-
+        dispatch(fetchPizza({ sortBy, order, category, search, currentPage }));
         window.scrollTo(0, 0);
     };
 
@@ -63,12 +51,12 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        if (!isSearch.current) {
-            getPizza();
-        }
+        getPizza();
 
         isSearch.current = false;
-    }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+    }, []);
+
+    //categoryId, sort.sortProperty, searchValue, currentPage
 
     useEffect(() => {
         if (isMounted.current) {
@@ -98,7 +86,19 @@ const Home = () => {
                     <Sort />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
-                <div className="content__items">{isLoading ? placeholder : pizzas}</div>
+                {status === 'error' ? (
+                    <div className="content__error-info">
+                        <h2>
+                            Произошла ошибка <icon>😕</icon>
+                        </h2>
+                        <p>К сожалению, не удалось получить пиццы</p>
+                    </div>
+                ) : (
+                    <div className="content__items">
+                        {status === 'loading' ? placeholder : pizzas}
+                    </div>
+                )}
+                <div className="content__items">{status === 'loading' ? placeholder : pizzas}</div>
                 <Pagination currentPage={currentPage} onChangePage={onChangePage} />
             </div>
         </>
