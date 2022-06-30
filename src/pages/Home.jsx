@@ -121,6 +121,7 @@ import Pagination from '../components/Pagination';
 import PizzaBlock from '../components/PizzaBlock';
 import Placeholder from '../components/PizzaBlock/Placeholder';
 import Sort, { list } from '../components/Sort';
+import { setItems } from '../redux/slices/pizzaSlice';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -128,11 +129,11 @@ const Home = () => {
     const isSearch = useRef(false);
     const isMounted = useRef(false);
 
+    const { items } = useSelector((state) => state.pizza);
     const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
     const { searchValue } = useContext(SearchContext);
 
-    const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const pizzas = items.map((obj) => <PizzaBlock {...obj} key={obj.id} />);
@@ -151,12 +152,13 @@ const Home = () => {
         const search = searchValue ? `&search=${searchValue}` : '';
 
         try {
-            const res = await axios.get(
+            const { data } = await axios.get(
                 `https://629128b827f4ba1c65c8cf57.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
             );
-            setItems(res.data);
+            dispatch(setItems(data));
         } catch (error) {
             console.log(error);
+            console.log('ERROR');
         } finally {
             setIsLoading(false);
         }
@@ -166,12 +168,13 @@ const Home = () => {
 
     useEffect(() => {
         if (window.location.search) {
-            const params = qs.parse(window.location.search.substring(1));
-            const sort = list.find((obj) => obj.sortProperty === params.sortProperty);
-            dispatch(setFilters({ ...params, sort }));
-            isSearch.current = true;
+            // const params = qs.parse(window.location.search.substring(1));
+            // const sort = list.find((obj) => obj.sortProperty === params.sortProperty);
+            // dispatch(setFilters({ ...params, sort }));
+            // isSearch.current = true;
+            fetchPizza();
         }
-    }, []);
+    }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
     useEffect(() => {
         if (!isSearch.current) {
