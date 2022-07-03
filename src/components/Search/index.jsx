@@ -1,12 +1,12 @@
 import React, { useCallback, useContext, useRef, useState } from 'react';
-import { SearchContext } from '../../App';
 import debounce from 'lodash.debounce';
 import style from './Search.module.scss';
+import { useDispatch } from 'react-redux';
+import { setSearchValue } from '../../redux/slices/filterSlice';
 
 export const Search = () => {
+    const dispatch = useDispatch();
     const [value, setValue] = useState('');
-    const { setSearchValue } = useContext(SearchContext);
-
     const inputRef = useRef();
 
     const updateSearchValue = useCallback(
@@ -34,7 +34,7 @@ export const Search = () => {
                 <svg
                     onClick={() => {
                         setValue('');
-                        setSearchValue('');
+                        dispatch(setSearchValue(value));
                         inputRef.current.focus();
                     }}
                     xmlns="http://www.w3.org/2000/svg"

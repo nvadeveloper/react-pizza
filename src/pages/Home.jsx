@@ -2,7 +2,12 @@ import React, { useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
+import {
+    selectFilter,
+    setCategoryId,
+    setCurrentPage,
+    setFilters,
+} from '../redux/slices/filterSlice';
 import { SearchContext } from '../App';
 import qs from 'qs';
 
@@ -11,7 +16,7 @@ import Pagination from '../components/Pagination';
 import PizzaBlock from '../components/PizzaBlock';
 import Placeholder from '../components/PizzaBlock/Placeholder';
 import Sort, { list } from '../components/Sort';
-import { fetchPizza } from '../redux/slices/pizzaSlice';
+import { fetchPizza, selectPizzaData } from '../redux/slices/pizzaSlice';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -19,10 +24,8 @@ const Home = () => {
     const isSearch = useRef(false);
     const isMounted = useRef(false);
 
-    const { items, status } = useSelector((state) => state.pizza);
-    const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
-
-    const { searchValue } = useContext(SearchContext);
+    const { items, status } = useSelector(selectPizzaData);
+    const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
     const pizzas = items.map((obj) => <PizzaBlock {...obj} key={obj.id} />);
     const placeholder = [...new Array(6)].map((_, i) => <Placeholder key={i} />);
