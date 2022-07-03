@@ -11,7 +11,7 @@ export const fetchPizza = createAsyncThunk('pizza/fetchPizzaStatus', async (para
 
 const initialState = {
     items: [],
-    status: '',
+    status: 'loading',
 };
 
 const pizzaSlice = createSlice({
@@ -32,12 +32,14 @@ const pizzaSlice = createSlice({
             state.items = action.payload;
             state.status = 'success';
         },
-        [fetchPizza.rejected]: (state, action) => {
+        [fetchPizza.rejected]: (state) => {
             state.status = 'error';
             state.items = [];
         },
     },
 });
+
+const selectCart = (state) => state.cart;
 
 export const { setItems } = pizzaSlice.actions;
 
