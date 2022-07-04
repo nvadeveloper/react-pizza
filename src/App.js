@@ -5,9 +5,9 @@ import Header from './components/Header';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
-import './scss/app.scss';
+import FullPizza from './pages/FullPizza';
 
-// export const SearchContext = createContext('');
+import './scss/app.scss';
 
 const App = () => {
     const [searchValue, setSearchValue] = useState('');
@@ -21,6 +21,7 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/cart" element={<Cart />} />
+                        <Route path="/pizza/:id" element={<FullPizza />} />
                         <Route path="/not-found" element={<NotFound />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
