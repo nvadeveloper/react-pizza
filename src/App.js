@@ -1,6 +1,5 @@
-import React, { createContext, useState } from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-
 import Header from './components/Header';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
@@ -10,11 +9,8 @@ import FullPizza from './pages/FullPizza';
 import './scss/app.scss';
 
 const App = () => {
-    const [searchValue, setSearchValue] = useState('');
-
     return (
         <div className="App">
-            {/* <SearchContext.Provider value={{ searchValue, setSearchValue }}> */}
             <div className="wrapper">
                 <Header />
                 <div className="content">
@@ -27,7 +23,6 @@ const App = () => {
                     </Routes>
                 </div>
             </div>
-            {/* </SearchContext.Provider> */}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,7 +8,6 @@ import {
     setCurrentPage,
     setFilters,
 } from '../redux/slices/filterSlice';
-import { SearchContext } from '../App';
 import qs from 'qs';
 
 import Categories from '../components/Categories';
@@ -27,7 +26,11 @@ const Home = () => {
     const { items, status } = useSelector(selectPizzaData);
     const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
-    const pizzas = items.map((obj) => <PizzaBlock {...obj} key={obj.id} />);
+    const pizzas = items.map((obj) => (
+        <Link key={obj.id} to={`/pizza/${obj.id}`}>
+            <PizzaBlock {...obj} />
+        </Link>
+    ));
     const placeholder = [...new Array(6)].map((_, i) => <Placeholder key={i} />);
 
     const onChangePage = (num) => {
