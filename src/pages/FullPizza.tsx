@@ -1,10 +1,14 @@
-import React from 'react';
+// import React from 'react';
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
-const FullPizza = () => {
-    const [pizza, setPizza] = useState('');
+const FullPizza: React.FC = () => {
+    const [pizza, setPizza] = useState<{
+        imageUrl: string;
+        title: string;
+        price: number;
+    }>();
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -26,21 +30,20 @@ const FullPizza = () => {
     }, []);
 
     if (!pizza) {
-        return (
-            <>
-                <div className="container">Загрузка...</div>
-            </>
-        );
+        return <div className="container">Загрузка...</div>;
     }
 
     return (
-        <>
-            <div className="container">
-                <img src={pizza.imageUrl} />
-                <h2>{pizza.title}</h2>
-                <p>{pizza.price} р</p>
+        <div className="container">
+            <img src={pizza.imageUrl} />
+            <h2>{pizza.title}</h2>
+            <p>{pizza.price} р</p>
+            <div>
+                <Link to="/" className="button button--black">
+                    <span>Вернуться назад</span>
+                </Link>
             </div>
-        </>
+        </div>
     );
 };
 
