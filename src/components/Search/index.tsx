@@ -4,21 +4,19 @@ import style from './Search.module.scss';
 import { useDispatch } from 'react-redux';
 import { setSearchValue } from '../../redux/slices/filterSlice';
 
-export const Search = () => {
+export const Search: React.FC = () => {
     const dispatch = useDispatch();
-
     const [value, setValue] = useState('');
-
-    const inputRef = useRef();
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const updateSearchValue = useCallback(
-        debounce((value) => {
+        debounce((value: string) => {
             dispatch(setSearchValue(value));
         }, 150),
         [],
     );
 
-    const onChangeInput = (event) => {
+    const onChangeInput = (event: any) => {
         setValue(event.target.value);
         updateSearchValue(event.target.value);
     };
@@ -37,7 +35,7 @@ export const Search = () => {
                     onClick={() => {
                         setValue('');
                         dispatch(setSearchValue(''));
-                        inputRef.current.focus();
+                        inputRef.current?.focus();
                     }}
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
