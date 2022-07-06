@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
 import style from './Search.module.scss';
 import { useDispatch } from 'react-redux';
-import { setSearchValue } from '../../redux/slices/filterSlice';
+import { setSearchValue } from '../../redux/slices/filterSlice.js';
 
 export const Search: React.FC = () => {
     const dispatch = useDispatch();
@@ -16,7 +16,7 @@ export const Search: React.FC = () => {
         [],
     );
 
-    const onChangeInput = (event: any) => {
+    const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
         updateSearchValue(event.target.value);
     };
@@ -35,7 +35,9 @@ export const Search: React.FC = () => {
                     onClick={() => {
                         setValue('');
                         dispatch(setSearchValue(''));
-                        inputRef.current?.focus();
+                        if (inputRef.current) {
+                            inputRef.current?.focus();
+                        }
                     }}
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
