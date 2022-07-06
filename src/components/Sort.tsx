@@ -48,8 +48,11 @@ const Sort = () => {
     const sortRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const clickOutside = (event: PopupClick) => {
-            if (sortRef.current && !event.path.includes(sortRef.current)) {
+        const clickOutside = (event: MouseEvent) => {
+            const _event = event as MouseEvent & {
+                path: Node[];
+            };
+            if (sortRef.current && !_event.path.includes(sortRef.current)) {
                 setOpen(false);
             }
         };
