@@ -47,7 +47,7 @@ const filterSlice = createSlice({
             } else {
                 state.sort = {
                     name: 'популярности (DESC)',
-                    sortProperty: 'raiting',
+                    sortProperty: 'raiting', 
                 };
                 state.categoryId = 0;
                 state.currentPage = 1;
