@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
     selectFilter,
     setCategoryId,
@@ -16,10 +16,11 @@ import PizzaBlock from '../components/PizzaBlock';
 import Placeholder from '../components/PizzaBlock/Placeholder';
 import Sort, { list } from '../components/Sort';
 import { fetchPizza, selectPizzaData } from '../redux/slices/pizzaSlice';
+import { useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const isSearch = useRef(false);
     const isMounted = useRef(false);
 
@@ -50,10 +51,10 @@ const Home: React.FC = () => {
     useEffect(() => {
         if (window.location.search) {
             const params = qs.parse(window.location.search.substring(1));
-            const sort = list.find((obj) => obj.sortProperty === params.sortProperty);
+            const sort = list.find((obj) => obj.sortProperty === params.sortBy);
             dispatch(setFilters({ ...params, sort }));
-            isSearch.current = true;
         }
+        isSearch.current = true;
     }, []);
 
     useEffect(() => {

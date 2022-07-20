@@ -6,14 +6,14 @@ type Sort = {
     sortProperty: 'raiting' | 'price' | 'title' | '-raiting' | '-price' | '-title';
 };
 
-interface FilteSliceState {
+export interface FilterSliceState {
     searchValue: string;
     currentPage: number;
     categoryId: number;
     sort: Sort;
 }
 
-const initialState: FilteSliceState = {
+const initialState: FilterSliceState = {
     searchValue: '',
     currentPage: 1,
     categoryId: 0,
@@ -39,7 +39,7 @@ const filterSlice = createSlice({
         setCurrentPage(state, action: PayloadAction<number>) {
             state.currentPage = action.payload;
         },
-        setFilters(state, action: PayloadAction<FilteSliceState>) {
+        setFilters(state, action: PayloadAction<FilterSliceState>) {
             if (Object.keys(action.payload).length) {
                 state.sort = action.payload.sort;
                 state.categoryId = Number(action.payload.categoryId);
@@ -47,7 +47,7 @@ const filterSlice = createSlice({
             } else {
                 state.sort = {
                     name: 'популярности (DESC)',
-                    sortProperty: 'raiting', 
+                    sortProperty: 'raiting',
                 };
                 state.categoryId = 0;
                 state.currentPage = 1;
