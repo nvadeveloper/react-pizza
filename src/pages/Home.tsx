@@ -15,7 +15,7 @@ import Pagination from '../components/Pagination';
 import PizzaBlock from '../components/PizzaBlock';
 import Placeholder from '../components/PizzaBlock/Placeholder';
 import Sort, { list } from '../components/Sort';
-import { fetchPizza, selectPizzaData } from '../redux/slices/pizzaSlice';
+import { fetchPizza, SearchPizzaParams, selectPizzaData } from '../redux/slices/pizzaSlice';
 import { useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
@@ -44,15 +44,28 @@ const Home: React.FC = () => {
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = searchValue ? `&search=${searchValue}` : '';
         // @ts-ignore
-        dispatch(fetchPizza({ sortBy, order, category, search, currentPage }));
+        dispatch(fetchPizza({ sortBy, order, category, search, currentPage } as SearchPizzaParams));
         window.scrollTo(0, 0);
     };
 
     useEffect(() => {
         if (window.location.search) {
-            const params = qs.parse(window.location.search.substring(1));
+            const params = qs.parse(
+                window.location.search.substring(1),
+            ) as unknown as SearchPizzaParams;
             const sort = list.find((obj) => obj.sortProperty === params.sortBy);
-            dispatch(setFilters({ ...params, sort }));
+            // if (sort) {
+            //     params.sortBy = sort;
+            // }
+            // dispatch(setFilters({ ...params, sort }));
+            dispatch(
+                setFilters({
+                    searchValue: params.search,
+                    categoryId: Number(params.category),
+                    currentPage: Number(params.currentPage),
+                    sort: sort || list[0],
+                }),
+            );
         }
         isSearch.current = true;
     }, []);
