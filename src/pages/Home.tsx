@@ -28,9 +28,9 @@ const Home: React.FC = () => {
     const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
     const pizzas = items.map((obj: any) => (
-        <Link key={obj.id} to={`/pizza/${obj.id}`}>
-            <PizzaBlock {...obj} />
-        </Link>
+        // <Link key={obj.id} to={`/pizza/${obj.id}`}>
+        <PizzaBlock {...obj} />
+        // </Link>
     ));
     const placeholder = [...new Array(6)].map((_, i) => <Placeholder key={i} />);
 
@@ -48,27 +48,24 @@ const Home: React.FC = () => {
         window.scrollTo(0, 0);
     };
 
-    useEffect(() => {
-        if (window.location.search) {
-            const params = qs.parse(
-                window.location.search.substring(1),
-            ) as unknown as SearchPizzaParams;
-            const sort = list.find((obj) => obj.sortProperty === params.sortBy);
-            // if (sort) {
-            //     params.sortBy = sort;
-            // }
-            // dispatch(setFilters({ ...params, sort }));
-            dispatch(
-                setFilters({
-                    searchValue: params.search,
-                    categoryId: Number(params.category),
-                    currentPage: Number(params.currentPage),
-                    sort: sort || list[0],
-                }),
-            );
-        }
-        isSearch.current = true;
-    }, []);
+    // useEffect(() => {
+    //     if (window.location.search) {
+    //         const params = qs.parse(
+    //             window.location.search.substring(1),
+    //         ) as unknown as SearchPizzaParams;
+    //         const sort = list.find((obj) => obj.sortProperty === params.sortBy);
+
+    //         dispatch(
+    //             setFilters({
+    //                 searchValue: params.search,
+    //                 categoryId: Number(params.category),
+    //                 currentPage: Number(params.currentPage),
+    //                 sort: sort || list[0],
+    //             }),
+    //         );
+    //     }
+    //     isSearch.current = true;
+    // }, []);
 
     useEffect(() => {
         getPizza();
@@ -76,22 +73,22 @@ const Home: React.FC = () => {
         isSearch.current = false;
     }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
-    useEffect(() => {
-        if (isMounted.current) {
-            const queryStr = qs.stringify({
-                sortProperty: sort.sortProperty,
-                categoryId,
-                currentPage,
-            });
-            try {
-                navigate(`?${queryStr}`);
-            } catch (error) {
-                console.log(error);
-            }
-        }
+    // useEffect(() => {
+    //     if (isMounted.current) {
+    //         const queryStr = qs.stringify({
+    //             sortProperty: sort.sortProperty,
+    //             categoryId,
+    //             currentPage,
+    //         });
+    //         try {
+    //             navigate(`?${queryStr}`);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
 
-        isMounted.current = true;
-    }, [categoryId, sort.sortProperty, currentPage]);
+    //     isMounted.current = true;
+    // }, [categoryId, sort.sortProperty, currentPage]);
 
     return (
         <div className="container">
